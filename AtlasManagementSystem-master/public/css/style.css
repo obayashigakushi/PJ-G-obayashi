@@ -17,18 +17,20 @@ li {
 }
 
 /* サイドバー */
-/* .sidebar{
-  width:150px;
-  height:100vh;
-  background-color:#03AAD2;
-  font-weight:bold;
+.sidebar {
+  width: 150px;
+  height: 100vh;
+  background-color: #03AAD2;
+  font-weight: bold;
 }
-.main-container{
-  width:100%;
+
+.main-container {
+  width: 100%;
 }
-.sidebar p a{
-  color:#FFF;
-} */
+
+.sidebar p a {
+  color: #FFF;
+}
 
 /* トップページ */
 .user_status {
