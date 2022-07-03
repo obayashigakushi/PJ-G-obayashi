@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use DB;
 
+
 use App\Models\Users\Subjects;
 
 class RegisterController extends Controller
@@ -67,6 +68,21 @@ class RegisterController extends Controller
             $data = $old_year . '-' . $old_month . '-' . $old_day;
             $birth_day = date('Y-m-d', strtotime($data));
             $subjects = $request->subject;
+            // $role =
+
+            $validator = $request->validate([
+            'over_name' => ['required', 'string', 'max:10'],
+            'under_name' => ['required', 'string', 'max:10'],
+            'over_name_kana' => ['required', 'string', 'max:30', 'regex:/^[ア-ン゛゜ァ-ォャ-ョー]+$/u'],
+            'under_name_kana' => ['required', 'string', 'max:30', 'regex:/^[ア-ン゛゜ァ-ォャ-ョー]+$/u'],
+            'mail_address' => ['required', 'email', 'unique:users', 'max:100'],
+            'sex' => ['required'],
+            // 'birth_day' => ['required','date', 'after_or_equal:2000-1-1', 'before:today' ],
+            'role' => ['required'],
+            'password' => ['required', 'min:8', 'max:20', 'confirmed' ],
+        ]);
+
+
 
             $user_get = User::create([
                 'over_name' => $request->over_name,
@@ -78,14 +94,25 @@ class RegisterController extends Controller
                 'birth_day' => $birth_day,
                 'role' => $request->role,
                 'password' => bcrypt($request->password)
+
+
             ]);
+
+                //                     if ($validator->fails()) {
+                // return redirect('/register')
+                //     ->withErrors($validator)
+                //     ->withInput();
+                // }
             $user = User::findOrFail($user_get->id);
-            $user->subjects()->attach($subjects);
+            // $user->subjects()->attach($subjects);
             DB::commit();
-            return view('auth.login.login');
+            return view('auth.login');
         }catch(\Exception $e){
+    // report($e);
+    // session()->flash('flash_message', '更新が失敗しました');
             DB::rollback();
-            return redirect()->route('loginView');
+            return redirect('register');
+
         }
     }
 }
